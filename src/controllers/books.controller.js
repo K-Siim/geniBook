@@ -1,7 +1,25 @@
-export const getAllBooks = (req, res) => {
+import prisma from "../config/prisma.js";
+
+
+export const getAllBooks = async (req, res) => {
+
+    try {
+        const books = await prisma.book.findMany();
+
     res.json({
-        message: 'All books'
+        message: 'All books',
+        data: books
     });
+    } catch (exception) {
+        console.log(exception);
+        res.status(500).json({
+            message: 'Internal server error',
+            error: exception.message
+        })
+
+    }
+
+    
 };
 
 export const getBookById = (req, res) => {
