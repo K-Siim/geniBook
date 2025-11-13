@@ -5,7 +5,7 @@ import bookRoutes from './routes/book.routes.js'
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(bookRoutes);
+app.use('/api/v1',bookRoutes);
 
 
 app.get('/', (req, res) => {
