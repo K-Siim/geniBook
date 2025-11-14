@@ -1,22 +1,21 @@
 import express from 'express';
-import bookRoutes from './routes/book.routes.js'
-
+import bookRoutes from './routes/book.routes.js';
+import authorRoutes from "./routes/author.routes.js";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
-app.use('/api/v1',bookRoutes);
+app.use(express.json());
 
-
-app.get('/', (req, res) => {
-  res.send('Hello, Negros!');
+app.get('/welcome', (request, response) => {
+    response.send({
+        message: 'Welcome to the API',
+    });
 });
+
+app.use('/api/v1', bookRoutes);
+app.use('/api/v1', authorRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
-
-
-
-
-

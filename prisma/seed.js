@@ -1,6 +1,9 @@
 import prisma from "../src/config/prisma.js";
 import { faker } from "@faker-js/faker/locale/en";
 
+
+
+
 const databaseSeeder = async () => {
     for(let i = 0; i < 50; i++) {
         const book = await prisma.book.create({
@@ -14,11 +17,26 @@ const databaseSeeder = async () => {
     }
 }
 
-try {
-    await databaseSeeder();
-    prisma.$disconnect();
-} catch (exception) {
-    console.error(exception);
-    prisma.$disconnect();
-    process.exit(1);
+const authorSeeder = async () => {
+    for(let i = 0; i < 50; i++) {
+        const author = await prisma.author.create({
+            data: {
+                name: faker.person.fullName(),
+            }
+        })
+    }
 }
+
+async function main() {
+    await databaseSeeder();
+    await authorSeeder();
+}
+
+main()
+    .catch((e) => {
+        console.error(e);
+        process.exit(1);
+    })
+    .finally(async () => {
+        await prisma.$disconnect();
+    });
