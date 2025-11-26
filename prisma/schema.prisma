@@ -7,32 +7,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Book {
-  id Int @id @default(autoincrement())
-  title String
-  description String
-  thumbnail_url String
-  release_year Int
-  authors AuthorOnBook[]
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+model User {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  password   String
+  created_at DateTime @default(now()) @map("createdAt")
+  updated_at DateTime @updatedAt @map("updatedAt")
 }
 
 model Author {
-  id Int @id @default(autoincrement())
-  name String @unique
+  id         Int            @id @default(autoincrement())
+  name       String         @unique
   birth_date DateTime
-  books AuthorOnBook[]
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  created_at DateTime       @default(now()) @map("createdAt")
+  updated_at DateTime       @updatedAt @map("updatedAt")
+  authors    AuthorOnBook[]
 }
 
 model AuthorOnBook {
-  id Int @id @default(autoincrement())
-  book Book @relation(fields: [book_id], references: [id])
-  book_id Int
-  author Author @relation(fields: [author_id], references: [id])
-  author_id Int
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  book_id    Int
+  author_id  Int
+  created_at DateTime @default(now()) @map("createdAt")
+  updated_at DateTime @updatedAt @map("updatedAt")
+  author     Author   @relation(fields: [author_id], references: [id])
+  book       Book     @relation(fields: [book_id], references: [id])
+
+  @@id([book_id, author_id])
+  @@index([author_id], map: "AuthorOnBook_author_id_fkey")
+}
+
+model Book {
+  id            Int            @id @default(autoincrement())
+  title         String
+  description   String
+  thumbnail_url String
+  release_year  Int            @map("realeseYear")
+  published_at  DateTime       @map("publishedAt")
+  created_at    DateTime       @default(now()) @map("createdAt")
+  updated_at    DateTime       @updatedAt @map("updatedAt")
+  authors       AuthorOnBook[]
 }
