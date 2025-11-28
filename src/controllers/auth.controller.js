@@ -55,12 +55,12 @@ export const login = async (request, response, next) =>{
 
 
 
-        const token = jwt.sign({id: isError.id}, process.env.JWT_SECRET, {expiresIn: '1h'});
+      const token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: '1h'});
 
-        return response.status(200).json({
-            message: 'Login successful',
-            token
-        });
+return response.status(200).json({
+    message: 'Login successful',
+    token
+});
 
 
     } catch (exception){
