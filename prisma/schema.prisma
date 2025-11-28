@@ -36,6 +36,14 @@ model AuthorOnBook {
   @@index([author_id], map: "AuthorOnBook_author_id_fkey")
 }
 
+model Category {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  books Book[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
 model Book {
   id            Int            @id @default(autoincrement())
   title         String
@@ -46,5 +54,6 @@ model Book {
   created_at    DateTime       @default(now()) @map("createdAt")
   updated_at    DateTime       @updatedAt @map("updatedAt")
   authors       AuthorOnBook[]
+  categories Category[]
 }
 
