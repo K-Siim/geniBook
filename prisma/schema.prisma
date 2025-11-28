@@ -47,3 +47,4 @@ model Book {
   updated_at    DateTime       @updatedAt @map("updatedAt")
   authors       AuthorOnBook[]
 }
+

@@ -4,6 +4,7 @@ import {authorSchema} from "../validations/author.validation.js";
 import { getAllAuthors, getAuthorById, createAuthor, updateAuthor, deleteAuthor } from '../controllers/authors.controller.js';
 import { authenticateToken } from '../middlewares/auth.middleware.js';
 
+
 const router = Router();
 
 router.get('/authors', getAllAuthors);
