@@ -1,7 +1,8 @@
 import prisma from '../config/prisma.js';
 import { QueryBuilder } from "../utils/QueryBuilder.js";
+import NotFoundError from '../utils/NotFoundError.js';
 
-export const getAllBooks = async (request, response) => {
+export const getAllBooks = async (request, response, next) => {
     try {
         const Builder = new QueryBuilder(request.query, {
             defaultSort: 'created_at',
@@ -38,7 +39,7 @@ export const getAllBooks = async (request, response) => {
     }
 };
 
-export const getBookById = async (request, response) => {
+export const getBookById = async (request, response, next) => {
     try {
         const idFromURL = request.params?.id;
 
@@ -49,9 +50,7 @@ export const getBookById = async (request, response) => {
         });
 
         if (!book) {
-            response.status(404).json({
-                message: 'Not Found'
-            })
+            throw new NotFoundError(`Book with ${idFromURL} not found`);
         }
 
         response.status(200).json({
@@ -59,10 +58,7 @@ export const getBookById = async (request, response) => {
             data: book
         })
     } catch (exception) {
-        response.status(500).json({
-            message: 'Something went wrong',
-            error: exception.message
-        })
+        next(exception);
     }
 };
 

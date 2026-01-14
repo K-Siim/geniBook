@@ -2,8 +2,8 @@ import prisma from "../src/config/prisma.js";
 import { faker } from "@faker-js/faker/locale/en";
 
 const databaseSeeder = async () => {
-    await prisma.author.deleteMany();
     await prisma.book.deleteMany();
+    await prisma.author.deleteMany();
     await prisma.category.deleteMany();
 
     console.log('🌱 Starting to seed database...');
