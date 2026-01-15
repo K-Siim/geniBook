@@ -3,10 +3,14 @@ import bookRoutes from './routes/book.routes.js';
 import authorRoutes from "./routes/author.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import errorHandler from "./middlewares/errorHandler.js";
+import helmet from 'helmet';
+import limiter from './config/rateLimiter.js';
 
 const app = express();
 const PORT = 3000;
 
+app.use(limiter);
+app.use(helmet());
 app.use(express.json());
 
 app.get('/welcome', (request, response) => {
