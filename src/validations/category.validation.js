@@ -7,4 +7,4 @@ export const categorySchema = Joi.object({
         "string.empty": "Nimetus ei tohi olla tühi.",
         "string.base": "Nimetus peab olema tekst."
     }),
-});
+});e

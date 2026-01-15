@@ -62,11 +62,11 @@ export const getBookById = async (request, response, next) => {
     }
 };
 
-export const createBook = async (request, response) => {
+export const createBook = async (request, response, next) => {
     try {
         const { title, description, thumbnail_url, release_year } = request.body;
 
-        const newBook = await prisma.book.create({
+          await prisma.book.create({
             data: {
                 title,
                 description,
@@ -75,19 +75,15 @@ export const createBook = async (request, response) => {
             }
         });
 
-        response.status(201).json({
-            message: 'Successfully Created Book',
-            data: newBook
-        })
+        response.sendStatus(201);
+        
     } catch (exception) {
-        response.status(500).json({
-            message: 'Something went wrong',
-            error: exception.message
-        })
+        next(exception);
     }
 };
 
-export const updateBook = async (request, response) => {
+
+export const updateBook = async (request, response, next) => {
     try {
         const { id } = request.params;
         const { title, description, thumbnail_url, release_year } = request.body;
@@ -116,14 +112,11 @@ export const updateBook = async (request, response) => {
         })
 
     } catch (exception) {
-        response.status(500).json({
-            message: 'Something went wrong',
-            error: exception.message
-        })
+        next(exception);
     }
 };
 
-export const deleteBook = async (request, response) => {
+export const deleteBook = async (request, response, next) => {
     try {
         const bookId = request.params?.id;
 
@@ -137,9 +130,6 @@ export const deleteBook = async (request, response) => {
             message: 'Successfully Deleted',
         })
     } catch (exception) {
-        response.status(500).json({
-            message: 'Something went wrong',
-            error: exception.message
-        })
+        next(exception);
     }
 };

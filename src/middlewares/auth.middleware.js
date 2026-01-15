@@ -1,15 +1,12 @@
 import jwt from 'jsonwebtoken';
 import prisma from '../config/prisma.js';
+import AuthenticationError from '../utils/AuthenticationError.js';
 
 export const authenticateToken = async (request, response, next) => {
     try {
         const token = request.headers.authorization?.replace('Bearer ', '');
 
-        if (!token) {
-            return response.status(401).json({
-                message: 'Unauthorized'
-            });
-        }
+        if (!token) throw new AuthenticationError('Token not provided');
 
         const payLoad = jwt.verify(token, process.env.JWT_SECRET);
 

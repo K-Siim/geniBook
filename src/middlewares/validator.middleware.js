@@ -1,3 +1,5 @@
+import validationError from '../utils/validationError.js';
+
 export const validate = (schema, source = 'body') => {
     return (request, response, next) => {
         const { error, value } = schema.validate(request[source], {
@@ -19,10 +21,7 @@ export const validate = (schema, source = 'body') => {
                 };
             });
 
-            return response.status(400).json({
-                message: "ValidationError",
-                errors: errorBag,
-            })
+            throw new validationError('Validation Failed', errorBag);
         }
 
         if(source === 'query') {
